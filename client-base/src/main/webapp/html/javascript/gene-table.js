@@ -316,8 +316,9 @@ function createGenesTable(text, keyword, rows) {
     });
 <<<<<<< Updated upstream
 
+    // TODO: implementation is missing
     // functions takes ondex IDs of current genenames and send a get request to back end
-    createGeneNameSynonyms(ondexIds); 
+    // createGeneNameSynonyms(ondexIds); 
 
 =======
     
