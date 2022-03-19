@@ -610,14 +610,92 @@ function matchCounter() {
 				  $('#suggestor_search').css('display', 'none');
 				}
             }).fail(function (xhr,status,errorlog) {
-                //$('#matchesResultDiv').html('<span class="redText">The KnetMiner server is currently offline. Please try again later.</span>');
-                var server_error= JSON.parse(xhr.responseText); // full error json from server
-                var errorMsg= server_error.statusReasonPhrase +" ("+ server_error.title +")";
-                $('#matchesResultDiv').html('<span class="redText">'+errorMsg+'</span>');
-                console.log(server_error.detail); // detailed stacktrace
+                errorMessageComponent('#matchesResultDiv',xhr); 
             });
         } else {
             $('#matchesResultDiv').html('');
         }
     }
+}
+
+// function is supposed to take the currrent target accession number or gene name & return the JSON of it's concept name
+function createGeneNameSynonyms(genesId){
+    var geneNameSynonyms; 
+    let status; 
+   
+     $('.genename_info').each(function(){
+        $(this).click(function(e){
+            var geneTarget = e.currentTarget;
+            geneNameSynonyms = $(geneTarget).next('.gene_name_synonyms');
+
+            var synonymUrl = "http://localhost:9090/ws/graphinfo/concept-info?ids="+genesId
+
+            $.get(synonymUrl,'').done(function(data){
+                console.log(data); 
+            }).fail(function(xhr,status,errorlog){
+                errorMessageComp('.synonyms_body',xhr)
+            })
+
+            $(this).find('[data-fa-i2svg]')
+            .toggleClass(function(){
+                if(status && geneNameSynonyms.hasClass("synonym_created")){
+                  geneNameSynonyms.hide(); 
+                    status = false
+                    return 'fa-angle-down'; 
+                }else if(!status && geneNameSynonyms.hasClass("synonym_created")){
+                  geneNameSynonyms.show();
+                    status = true; 
+                    return 'fa-angle-up'; 
+                }
+                if(!geneNameSynonyms.hasClass("synonym_created")){
+
+
+                    // if name 
+                    var geneName = $(geneTarget).prev('span.gene_name').text();  
+                    console.log(geneName); 
+
+                    // accession iD; 
+                    var accessionParent = $(geneTarget).parent().parent(); 
+                    var accessionValue = accessionParent.find('.viewGeneNetwork').text(); 
+                    console.log(accessionValue);
+            
+
+                    // ajax call and returned value looped and synonym element is created
+                    var sampleGenes = ['GTES25353','TPSHEHGWGWTW', 'QUEEYHEGEGE', 'TYSGEHEHYEE','EHEGBEGEGEGE','HWGWGWGWTW','WBWGWGWGWG','GWGWGWTW','WBWGWTW','WHWHWYWYW','WHWHWHW']; 
+                    
+                    var synonymsTitle = document.createElement('p'); 
+                    synonymsTitle.textContent = 'Synonyms'; 
+                    $(synonymsTitle).addClass('synonyms_title');
+                    var geneNameSynBody = document.createElement('div');
+                    $(geneNameSynBody).addClass('synonyms_body')
+
+                    for (var i=0; i < sampleGenes.length; i++){
+                        var SynonymsGene = document.createElement('span'); 
+                        $(SynonymsGene).addClass('synonyms_gene'); 
+                        SynonymsGene.textContent = sampleGenes[i];
+                        geneNameSynBody.append(SynonymsGene); 
+                        status = true; 
+                    }
+
+                  geneNameSynonyms.addClass('synonym_created'); 
+                  geneNameSynonyms.append(synonymsTitle);
+                  geneNameSynonyms.append(geneNameSynBody);
+                  geneNameSynonyms.show();
+                    
+                    return 'fa-angle-up';
+
+                }
+
+            })
+        })
+    })
+}
+
+// function handles error and present error message to client
+function errorMessageComponent(errorComp,xhr){
+    var server_error= JSON.parse(xhr.responseText); // full error json from server
+    var errorMsg= server_error.statusReasonPhrase +" ("+ server_error.title +")";
+    $(errorComp).html('<span class="redText">'+errorMsg+'</span>');
+    console.log(server_error.detail); // detailed stacktrace
+
 }

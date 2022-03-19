@@ -8,6 +8,7 @@ function createGenesTable(text, keyword, rows) {
 
     var ondexIds = []; 
     var table = "";
+    var ondexIds = []; 
 
     var candidate_genes = text.split("\n");
     
@@ -73,8 +74,13 @@ function createGenesTable(text, keyword, rows) {
         for (var i = 1; i <= results; i++) {
             var values = candidate_genes[i].split("\t");
 
+<<<<<<< Updated upstream
             // adding Ondexid of current gene 
             ondexIds.push(parseInt(values[0]));
+=======
+             // adding Ondexid of current gene 
+             ondexIds.push(parseInt(values[0]));
+>>>>>>> Stashed changes
 
             if (i > rows /*&& values[7]=="no"*/) {
                 continue;
@@ -86,8 +92,11 @@ function createGenesTable(text, keyword, rows) {
             // Fetch preferred concept (gene) name and use the shorter name out of the two.
             var gene = '<td class="gene_accesion"><a href = "javascript:;" class="viewGeneNetwork" title="Display network in KnetMaps" id="viewGeneNetwork_' + i + '">' + gene_Acc + '</a></td>';
             var geneName = '<td> <span class="gene_name">' + gene_Name + '</span> <span class="genename_info"><i class="fas fa-angle-down"></i></span> <div class="gene_name_synonyms"></div> </td>'; // geneName
+<<<<<<< Updated upstream
 	      
 
+=======
+>>>>>>> Stashed changes
             if (gene_Name.toLowerCase() === gene_Acc.toLowerCase()) {
                 geneName = '<td></td>'; // don't display geneName, if identical to Accession
             }
@@ -305,10 +314,16 @@ function createGenesTable(text, keyword, rows) {
     $('input:checkbox[name="candidates"]').click(function (e) {
         updateSelectedGenesCount(); // update selected genes count
     });
+<<<<<<< Updated upstream
 
     // functions takes ondex IDs of current genenames and send a get request to back end
     createGeneNameSynonyms(ondexIds); 
 
+=======
+    
+    // functions takes ondex IDs of current genenames and send a get request to back end
+    createGeneNameSynonyms(ondexIds); 
+>>>>>>> Stashed changes
 }; 
 
 

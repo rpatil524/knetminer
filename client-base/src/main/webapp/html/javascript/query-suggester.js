@@ -26,7 +26,6 @@ function refreshQuerySuggester() {
 
 // function create synonym table runs if function refreshquerysuggester returns data from it's ajax get request call
 function createSynonymTable(text){
-
     var table = "";
     var summaryArr = new Array();
     var summaryText = '';
@@ -44,7 +43,6 @@ function createSynonymTable(text){
         table = '';
 
         for (var ev_i = 0; ev_i < (evidenceTable.length - 1); ev_i++) {
-
             if (nullTerm) {
                 nullTerm = false;
                 continue;
@@ -52,7 +50,6 @@ function createSynonymTable(text){
 
             //End of Term
             if (evidenceTable[ev_i].substr(0, 2) == '</') {
-
                 //Includes the tab box
                 table = table + tabsBox + '</div>';
                 //Includes the tables
@@ -63,13 +60,11 @@ function createSynonymTable(text){
                             aTable[i] = aTable[i] + '<tr><td>&nbsp;</td><td>&nbsp;</td></tr>'
                         }
                     }
-
                     table = table + aTable[i].replace(/"/g, '') + '</table>';
                 }
 
                 //New Term
             } else if (evidenceTable[ev_i][0] == '<') {
-
                 if (evidenceTable[ev_i + 1].substr(0, 2) == '</') {
                     nullTerm = true;
                     continue;
@@ -204,7 +199,6 @@ function createSynonymTable(text){
             var currentTarget = $(e.currentTarget);
             var synonymNum = currentTarget.attr("id").replace("synonymstable_", "").replace("evidence_", "").split("_")[1];
             var keyword = evidenceTable[synonymNum].split("\t")[3];
-            
 
             var originalTermName="";
             if(typeof $('.buttonSynonym_on').attr('id') !== "undefined") {
@@ -241,7 +235,6 @@ function createSynonymTable(text){
 							// Shouldn't happen, but just in case.
 							throw "Wrong attribute 'class' for createSynonymTable ('" + currentClass + "')";
         });
-
 
     } else {
         table = "No suggestions found";
